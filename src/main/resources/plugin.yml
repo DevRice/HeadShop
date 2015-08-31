@@ -1,0 +1,25 @@
+name: ${project.artifactId}
+main: main
+version: ${project.version}
+authors: [GrumpyRice]
+description: Purchase player heads!
+commands:
+  headsshop:
+    description: Base command.
+    usage: /<command>
+    permission: headsshop.use
+
+permissions:
+  headsshop.*:
+    description: Access to all of HeadsShop features.
+    children:
+      headsshop.use: true
+      headsshop.reload: true
+
+  headsshop.use:
+    description: Access to main command - purchasing only.
+    default: true
+
+  headsshops.reload:
+    description: Access to main command - purchasing and reload.
+    default: op
