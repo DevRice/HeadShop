@@ -1,5 +1,5 @@
 name: ${project.artifactId}
-main: main
+main: me.grumpyrice.main
 version: ${project.version}
 authors: [GrumpyRice]
 description: Purchase player heads!
