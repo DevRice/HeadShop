@@ -3,6 +3,7 @@ main: me.grumpyrice.main
 version: ${project.version}
 authors: [GrumpyRice]
 description: Purchase player heads!
+depend: [Vault]
 commands:
   headsshop:
     description: Base command.

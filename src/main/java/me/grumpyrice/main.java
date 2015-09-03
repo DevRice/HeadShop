@@ -1,6 +1,8 @@
 package me.grumpyrice;
 
 import me.grumpyrice.commands.HeadsShopCommand;
+import me.grumpyrice.listeners.InventoryListener;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
@@ -9,6 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -17,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class main extends JavaPlugin {
+
+    public Economy econ = null;
 
     public Map<String, Integer> players = new HashMap<String, Integer>();
     public Integer invSize = null;
@@ -28,11 +33,29 @@ public class main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (!setupEconomy() ) {
+            getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         players = loadHashMap();
         invSize = loadSize();
         getCommand("headsshop").setExecutor(new HeadsShopCommand(this));
         inv = Bukkit.createInventory(null, 9 * invSize, "Heads Shop!");
         setupInventory(inv);
+        this.getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
     }
 
     public Integer loadSize(){
