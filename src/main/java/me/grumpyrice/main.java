@@ -110,6 +110,7 @@ public class main extends JavaPlugin {
             ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
             SkullMeta meta = (SkullMeta) head.getItemMeta();
             meta.setOwner(player);
+            meta.setDisplayName(player+"'s skull");
             head.setItemMeta(meta);
             inv.addItem(head);
         }

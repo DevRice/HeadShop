@@ -30,20 +30,32 @@ public class InventoryListener implements Listener {
 
         if(!plugin.players.isEmpty()){
             for(String key : plugin.players.keySet()){
-                EconomyResponse r = plugin.econ.withdrawPlayer(p.getName(), plugin.players.get(p.getName()));
-                if(!item.equals(key+"'s Head")) {return;}
-                if(!r.transactionSuccess() || plugin.econ.getBalance(p.getName()) < plugin.players.get(p.getName())) {
+                if(!item.equals(key+"'s skull")) {return;}
+                if(plugin.econ.getBalance(p) < plugin.players.get(key)) {
                     e.setCancelled(true);
                     p.closeInventory();
-                    p.sendMessage(ChatColor.RED + "You cannot purchase that head.");
+                    p.sendMessage(ChatColor.RED + "Insufficient funds.");
+                    return;
+                }
+                EconomyResponse r = plugin.econ.withdrawPlayer(p.getName(), plugin.players.get(key));
+                if(!r.transactionSuccess()) {
+                    e.setCancelled(true);
+                    p.closeInventory();
+                    p.sendMessage(ChatColor.RED + "Failed transaction.");
                     return;
                 }
                 e.setCancelled(true);
                 p.getInventory().addItem(e.getCurrentItem());
                 p.updateInventory();
                 p.closeInventory();
+                p.sendMessage(ChatColor.GREEN + "You have been given " + key + "'s skull and $" + plugin.players
+                .get(key) +" has been removed from your balance.");
                 break;
             }
+        }
+        else{
+            p.sendMessage(ChatColor.RED + "There are currently no heads for sale.");
+            return;
         }
     }
 }
