@@ -12,7 +12,7 @@ commands:
 
 permissions:
   headsshop.*:
-    description: Access to all of HeadsShop features.
+    description: Access to all of HeadShop features.
     children:
       headsshop.use: true
       headsshop.reload: true

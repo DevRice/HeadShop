@@ -8,11 +8,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class HeadsShopCommand implements CommandExecutor {
+public class HeadShopCommand implements CommandExecutor {
 
     main plugin;
 
-    public HeadsShopCommand(main plugin){
+    public HeadShopCommand(main plugin){
         this.plugin = plugin;
     }
 
@@ -23,25 +23,25 @@ public class HeadsShopCommand implements CommandExecutor {
         }
         else if(args.length > 2){
             sender.sendMessage("§cToo many arguments!");
-            sender.sendMessage("§c/headsshop");
+            sender.sendMessage("§c/headshop");
             return true;
         }
         else if(args[0].equalsIgnoreCase("reload")) {
-            if (!sender.hasPermission("headsshop.reload")) {
-                sender.sendMessage("§cYou cannot reload the configuration for HeadsShop.");
+            if (!sender.hasPermission("headshop.reload")) {
+                sender.sendMessage("§cYou cannot reload the configuration for HeadShop.");
                 return true;
             } else {
                 plugin.players = plugin.loadHashMap();
                 plugin.invSize = plugin.loadSize();
-                plugin.inv = Bukkit.createInventory(null, 9 * plugin.invSize, "Heads Shop!");
+                plugin.inv = Bukkit.createInventory(null, 9 * plugin.invSize, "Head Shop!");
                 plugin.setupInventory(plugin.inv);
                 plugin.save(plugin.players, plugin.invSize);
-                sender.sendMessage("§aYou have successfully reloaded the configuration for HeadsShop.");
+                sender.sendMessage("§aYou have successfully reloaded the configuration for HeadShop!");
                 return true;
             }
         }
         else{
-            sender.sendMessage("§c/headsshop");
+            sender.sendMessage("§c/headshop");
         }
         return true;
     }

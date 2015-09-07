@@ -1,6 +1,6 @@
 package me.grumpyrice;
 
-import me.grumpyrice.commands.HeadsShopCommand;
+import me.grumpyrice.commands.HeadShopCommand;
 import me.grumpyrice.listeners.InventoryListener;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,7 +23,8 @@ public class main extends JavaPlugin {
     public Economy econ = null;
 
     public Map<String, Integer> players = new HashMap<String, Integer>();
-    public Integer invSize = null;
+
+    public Integer invSize = 0;
 
     private static final String CONFIG_NAME = "heads.yml";
     YamlConfiguration conf = new YamlConfiguration();
@@ -40,8 +40,8 @@ public class main extends JavaPlugin {
         }
         players = loadHashMap();
         invSize = loadSize();
-        getCommand("headsshop").setExecutor(new HeadsShopCommand(this));
-        inv = Bukkit.createInventory(null, 9 * invSize, "Heads Shop!");
+        getCommand("headshop").setExecutor(new HeadShopCommand(this));
+        inv = Bukkit.createInventory(null, 9 * invSize, "Head Shop!");
         setupInventory(inv);
         this.getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
     }
@@ -207,4 +207,5 @@ public class main extends JavaPlugin {
             e.printStackTrace();
         }
     }
+
 }

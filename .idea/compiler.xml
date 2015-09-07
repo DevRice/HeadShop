@@ -22,10 +22,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="HeadShop" />
         <module name="HeadsShop" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="HeadShop" target="1.5" />
       <module name="HeadsShop" target="1.5" />
     </bytecodeTargetLevel>
   </component>

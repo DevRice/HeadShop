@@ -26,7 +26,7 @@ public class InventoryListener implements Listener {
         ItemMeta meta = e.getCurrentItem().getItemMeta();
         String item = meta.getDisplayName();
 
-        if(!inv.getName().equals("Heads Shop!")) {return;}
+        if(!inv.getName().equals("Head Shop!")) {return;}
 
         if(!plugin.players.isEmpty()){
             for(String key : plugin.players.keySet()){
