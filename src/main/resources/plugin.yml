@@ -1,26 +1,26 @@
 name: ${project.artifactId}
-main: me.grumpyrice.main
+main: me.grumpyrice.HeadShopPlugin
 version: ${project.version}
 authors: [GrumpyRice]
 description: Purchase player heads!
 depend: [Vault]
 commands:
-  headsshop:
+  headshop:
     description: Base command.
     usage: /<command>
-    permission: headsshop.use
+    permission: headshop.use
 
 permissions:
-  headsshop.*:
+  headshop.*:
     description: Access to all of HeadShop features.
     children:
-      headsshop.use: true
-      headsshop.reload: true
+      headshop.use: true
+      headshop.reload: true
 
-  headsshop.use:
-    description: Access to main command - purchasing only.
+  headshop.use:
+    description: Access to HeadShopPlugin command - purchasing only.
     default: true
 
-  headsshops.reload:
-    description: Access to main command - purchasing and reload.
+  headshops.reload:
+    description: Access to HeadShopPlugin command - purchasing and reload.
     default: op

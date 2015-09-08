@@ -1,6 +1,6 @@
 package me.grumpyrice.commands;
 
-import me.grumpyrice.main;
+import me.grumpyrice.HeadShopPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -10,14 +10,20 @@ import org.bukkit.entity.Player;
 
 public class HeadShopCommand implements CommandExecutor {
 
-    main plugin;
+    HeadShopPlugin plugin;
 
-    public HeadShopCommand(main plugin){
+    public HeadShopCommand(HeadShopPlugin plugin){
         this.plugin = plugin;
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
         if(args.length < 1){
+            if(plugin.players.isEmpty()){
+                sender.sendMessage(ChatColor.RED + "There are no heads for sale!");
+                return true;
+            }
+            plugin.inv = Bukkit.createInventory(null, 9*plugin.invSize, plugin.color(plugin.invName));
+            plugin.setupInventory(plugin.inv, sender);
             ((Player) sender).openInventory(plugin.inv);
             return true;
         }
@@ -32,10 +38,8 @@ public class HeadShopCommand implements CommandExecutor {
                 return true;
             } else {
                 plugin.players = plugin.loadHashMap();
+                plugin.invName = plugin.loadName();
                 plugin.invSize = plugin.loadSize();
-                plugin.inv = Bukkit.createInventory(null, 9 * plugin.invSize, "Head Shop!");
-                plugin.setupInventory(plugin.inv);
-                plugin.save(plugin.players, plugin.invSize);
                 sender.sendMessage("§aYou have successfully reloaded the configuration for HeadShop!");
                 return true;
             }
