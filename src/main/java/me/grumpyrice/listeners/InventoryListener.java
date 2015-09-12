@@ -32,40 +32,38 @@ public class InventoryListener implements Listener {
         if(ChatColor.stripColor(inv.getName()) != plugin.invName){
             return;
         }
+        e.setCancelled(true);
 
         if(head == null || head.getType() == Material.AIR || !head.hasItemMeta()){
-            e.setCancelled(true);
             return;
         }
         ItemMeta meta = head.getItemMeta();
         String item = meta.getDisplayName();
+        String key = item.replace("'s skull", "");
 
         if(!(head.getType() == Material.SKULL_ITEM)){
-            e.setCancelled(true);
             return;
         }
+        p.closeInventory();
 
-            for(String key : plugin.players.keySet()){
-                key = item.replace("'s skull", "");
-                if(plugin.econ.getBalance(p) < plugin.players.get(key)) {
-                    e.setCancelled(true);
-                    p.closeInventory();
-                    p.sendMessage(ChatColor.RED + "Insufficient funds.");
-                    break;
-                }
-                EconomyResponse r = plugin.econ.withdrawPlayer(p.getName(), plugin.players.get(key));
-                if(!r.transactionSuccess()) {
-                    e.setCancelled(true);
-                    p.closeInventory();
-                    p.sendMessage(ChatColor.RED + "Failed transaction.");
-                    break;
-                }
-                e.setCancelled(true);
-                giveHead(p, key);
-                p.sendMessage(ChatColor.GREEN + "You have been given " + key + "'s skull and $" + plugin.players
-                        .get(key) + " has been removed from your balance.");
-                break;
-            }
+        if(!plugin.players.containsKey(key)){
+            p.sendMessage(ChatColor.RED + "Something went wrong!");
+            return;
+        }
+        if(plugin.econ.getBalance(p) < plugin.players.get(key)) {
+            p.sendMessage(ChatColor.RED + "Insufficient funds.");
+            return;
+        }
+        EconomyResponse r = plugin.econ.withdrawPlayer(p.getName(), plugin.players.get(key));
+        if(!r.transactionSuccess()) {
+            p.sendMessage(ChatColor.RED + "Failed transaction.");
+            return;
+        }
+        giveHead(p, key);
+        p.sendMessage(ChatColor.GREEN + "You have been given " + key + "'s skull and $" + plugin.players
+                .get(key) + " has been removed from your balance.");
+        return;
+
     }
 
     private void giveHead(Player p, String name){
@@ -77,6 +75,5 @@ public class InventoryListener implements Listener {
         head.setItemMeta(meta);
         p.getInventory().addItem(head);
         p.updateInventory();
-        p.closeInventory();
     }
 }

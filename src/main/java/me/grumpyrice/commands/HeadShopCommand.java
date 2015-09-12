@@ -35,31 +35,32 @@ public class HeadShopCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "There are no heads for sale!");
                 return true;
             }
-            plugin.inv = Bukkit.createInventory(null, 9*plugin.invSize, plugin.invName);
-            setupInventory(plugin.inv, sender);
-            ((Player) sender).openInventory(plugin.inv);
-            return true;
+            else {
+                setupInventory(plugin.inv, sender);
+                ((Player) sender).openInventory(plugin.inv);
+                return true;
+            }
         }
-        else if(args.length > 2){
-            sender.sendMessage("§cToo many arguments!");
-            sender.sendMessage("§c/headshop");
+        else if(args.length > 1){
+            sender.sendMessage(ChatColor.RED + "Too many arguments!");
+            sender.sendMessage(ChatColor.RED + "/headshop");
             return true;
         }
         else if(args[0].equalsIgnoreCase("reload")) {
             if (!sender.hasPermission("headshop.reload")) {
-                sender.sendMessage("§cYou cannot reload the configuration for HeadShop.");
+                sender.sendMessage(ChatColor.RED + "You cannot reload the configuration for HeadShop.");
                 return true;
             } else {
                 plugin.players = plugin.loadHashMap();
                 plugin.invName = plugin.loadName();
                 plugin.invSize = plugin.loadSize();
-                plugin.inv = null;
-                sender.sendMessage("§aYou have successfully reloaded the configuration for HeadShop!");
+                plugin.inv = Bukkit.createInventory(null, 9 * plugin.invSize, plugin.invName);
+                sender.sendMessage(ChatColor.GREEN + "You have successfully reloaded the configuration for HeadShop!");
                 return true;
             }
         }
         else{
-            sender.sendMessage("§c/headshop");
+            sender.sendMessage(ChatColor.RED + "/headshop");
         }
         return true;
     }
@@ -72,9 +73,9 @@ public class HeadShopCommand implements CommandExecutor {
             meta.setOwner(player);
             meta.setDisplayName(player + "'s skull");
             List<String> lore = new ArrayList<String>();
-            String defaultLore = "§9Cost: $" + plugin.players.get(player);
+            String defaultLore = ChatColor.BLUE+"Cost: $" + plugin.players.get(player);
             if(plugin.players.get(player).equals(0)){
-                defaultLore = "§9§oFree!";
+                defaultLore = ChatColor.BLUE+"Free!";
             }
             lore.add(defaultLore);
             meta.setLore(lore);

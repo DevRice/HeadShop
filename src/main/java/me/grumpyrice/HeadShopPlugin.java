@@ -3,12 +3,13 @@ package me.grumpyrice;
 import me.grumpyrice.commands.HeadShopCommand;
 import me.grumpyrice.listeners.InventoryListener;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,10 +25,10 @@ public class HeadShopPlugin extends JavaPlugin {
 
     public Integer invSize = null;
 
+    public Inventory inv = null;
+
     private static final String CONFIG_NAME = "heads.yml";
     YamlConfiguration conf = new YamlConfiguration();
-
-    public Inventory inv = null;
 
     @Override
     public void onEnable() {
@@ -39,6 +40,7 @@ public class HeadShopPlugin extends JavaPlugin {
         players = loadHashMap();
         invName = loadName();
         invSize = loadSize();
+        inv = Bukkit.createInventory(null, 9 * invSize, invName);
         getCommand("headshop").setExecutor(new HeadShopCommand(this));
         this.getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
     }
@@ -92,8 +94,8 @@ public class HeadShopPlugin extends JavaPlugin {
         }
 
         Integer invSize = null;
-         if(conf.isInt("inventory-size"))
-             invSize = conf.getInt("inventory-size");
+        if(conf.isInt("inventory-size"))
+            invSize = conf.getInt("inventory-size");
 
         try {
             conf.save(f);
@@ -154,11 +156,6 @@ public class HeadShopPlugin extends JavaPlugin {
             return false;
         }
         return true;
-    }
-
-
-    public String color(String str){
-        return ChatColor.translateAlternateColorCodes('&', str);
     }
 
 }
