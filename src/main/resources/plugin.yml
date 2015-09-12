@@ -8,6 +8,7 @@ commands:
   headshop:
     description: Base command.
     usage: /<command>
+    aliases: [heads]
     permission: headshop.use
 
 permissions:

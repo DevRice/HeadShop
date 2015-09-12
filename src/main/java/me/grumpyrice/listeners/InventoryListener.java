@@ -29,10 +29,10 @@ public class InventoryListener implements Listener {
         Inventory inv = e.getInventory();
         ItemStack head = e.getCurrentItem();
 
-        if(!ChatColor.stripColor(inv.getName()).equalsIgnoreCase(ChatColor.stripColor(plugin.inv.getName()))) {
-            e.setCancelled(false);
+        if(ChatColor.stripColor(inv.getName()) != plugin.invName){
             return;
         }
+
         if(head == null || head.getType() == Material.AIR || !head.hasItemMeta()){
             e.setCancelled(true);
             return;
@@ -40,28 +40,30 @@ public class InventoryListener implements Listener {
         ItemMeta meta = head.getItemMeta();
         String item = meta.getDisplayName();
 
+        if(!(head.getType() == Material.SKULL_ITEM)){
+            e.setCancelled(true);
+            return;
+        }
+
             for(String key : plugin.players.keySet()){
-                if(!item.equals(key+"'s skull")) {
-                    e.setCancelled(true);
-                    return;
-                }
+                key = item.replace("'s skull", "");
                 if(plugin.econ.getBalance(p) < plugin.players.get(key)) {
                     e.setCancelled(true);
                     p.closeInventory();
                     p.sendMessage(ChatColor.RED + "Insufficient funds.");
-                    return;
+                    break;
                 }
                 EconomyResponse r = plugin.econ.withdrawPlayer(p.getName(), plugin.players.get(key));
                 if(!r.transactionSuccess()) {
                     e.setCancelled(true);
                     p.closeInventory();
                     p.sendMessage(ChatColor.RED + "Failed transaction.");
-                    return;
+                    break;
                 }
                 e.setCancelled(true);
                 giveHead(p, key);
                 p.sendMessage(ChatColor.GREEN + "You have been given " + key + "'s skull and $" + plugin.players
-                .get(key) +" has been removed from your balance.");
+                        .get(key) + " has been removed from your balance.");
                 break;
             }
     }
